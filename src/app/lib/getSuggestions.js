@@ -15,9 +15,8 @@ export async function getSuggestions() {
       ORDER BY created_at DESC
       LIMIT 4
     `;
-
-    console.log("Got the suggestions and recent prompts");
-    console.log("Top liked post's likes:", topLiked.rows[0].likes);
+    console.log('Top liked:', topLiked.rows);
+    console.log('Most recent:', mostRecent.rows); 
     return {
       topLiked: topLiked.rows,
       mostRecent: mostRecent.rows

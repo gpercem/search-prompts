@@ -50,7 +50,6 @@ function SuggestionCard({ suggestion }) {
               <span>❤️ {suggestion.likes.length}</span>
               <span>😔 {suggestion.dislikes.length}</span>
             </div>
-            <span className="text-sm">{suggestion.views} views</span>
           </div>
         </div>
       </Link>

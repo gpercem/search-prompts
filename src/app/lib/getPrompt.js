@@ -1,23 +1,23 @@
 import { sql } from '@vercel/postgres';
 
-export async function getPromptById(id, userId) {
+export async function getPromptById(id) {
   try {
-    const { rows } = await sql`
-      SELECT post_id, title, prompt, description, array_to_json(likes) AS likes, array_to_json(dislikes) AS dislikes, views, model_name, author, created_at, edited_at
+    const currentTime = new Date().toISOString();
+    console.log('Fetching prompt with id:', id);
+
+    const result = await sql`
+      SELECT post_id, title, prompt, description, 
+             likes, dislikes, 
+             views, model_name, author, created_at, edited_at
       FROM prompts
       WHERE post_id = ${id}
+      AND ${currentTime} = ${currentTime} -- dynamic param to bypass cache
+      LIMIT 1
     `;
-    const prompt = rows[0] || null;
 
-    if (prompt) {
-      // Ensure likes and dislikes are parsed as arrays
-      prompt.likes = prompt.likes || [];
-      prompt.dislikes = prompt.dislikes || [];
-      prompt.userLiked = userId ? prompt.likes.includes(userId) : false;
-      prompt.userDisliked = userId ? prompt.dislikes.includes(userId) : false;
-    }
-
-    console.log('Prompt:', prompt); // Add logging to debug
+    console.log('Full query result:', JSON.stringify(result, null, 2));
+    const prompt = result.rows[0] || null;
+    console.log('Raw prompt data:', JSON.stringify(prompt, null, 2));
 
     return prompt;
   } catch (error) {

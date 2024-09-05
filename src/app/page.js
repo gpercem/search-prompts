@@ -4,7 +4,6 @@ import Header from './components/Header';
 import SearchForm from './components/SearchForm';
 import Footer from './components/Footer';
 
-
 export const revalidate = 0; // This ensures the page is always server-side rendered
 
 export default async function Home() {
