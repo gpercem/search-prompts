@@ -1,5 +1,6 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { siteConfig } from "@/config/site";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -7,8 +8,8 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "SearchPrompt",
-  description: "Find best AI prompts for your needs in seconds",
+  title: siteConfig.website.name,
+  description: siteConfig.website.description,
 };
 
 export default function RootLayout({ children }) {

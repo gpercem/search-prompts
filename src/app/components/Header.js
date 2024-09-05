@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '../../hooks/useAuth';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase/config';
+import { siteConfig } from '@/config/site';
 
 const menuItems = [
   { name: 'Contact', path: '/contact' },
@@ -42,7 +43,7 @@ export default function Header() {
     <>
       <header className="flex justify-between items-center mb-6 relative">
         <Link href="/" className="text-2xl font-bold hover:text-gray-300 transition-colors">
-          SearchPrompt
+        {siteConfig.website.name}
         </Link>
         <nav className="hidden md:block">
           {menuItems.map((item, index) => (

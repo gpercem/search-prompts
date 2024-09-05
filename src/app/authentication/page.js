@@ -7,6 +7,7 @@ import { useState } from 'react';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
 import ForgotPasswordForm from '../components/ForgotPasswordForm';
+import { siteConfig } from '@/config/site';
 
 export default function Authentication() {
   const router = useRouter();
@@ -57,7 +58,7 @@ export default function Authentication() {
             transition={{ duration: 0.5 }}
           >
             <Link href="/" onClick={(e) => handleExit(e, '/')} className="block text-4xl font-bold text-center mb-8 hover:text-gray-300 transition-colors">
-              SearchPrompt
+              {siteConfig.website.name}
             </Link>
             
             <section className="border border-gray-400 rounded-lg p-8">
@@ -71,7 +72,7 @@ export default function Authentication() {
                     </button>
                     <div className="mt-2">
                       <button onClick={() => setAuthMode('register')} className="text-sm text-gray-400 hover:text-gray-300">
-                        Don&apost have an account? Register
+                        Dont have an account? Register
                       </button>
                     </div>
                   </>

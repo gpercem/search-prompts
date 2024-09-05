@@ -38,7 +38,7 @@ SearchPrompt is a Next.js application that allows users to search, create, and i
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/search-prompts.git
+   git clone https://github.com/gpercem/search-prompts.git
    cd search-prompts
    ```
 
@@ -217,7 +217,7 @@ SearchPrompt, kullanıcıların yapay zeka promptlarını arayabildiği, oluştu
 
 1. Depoyu klonlayın:
    ```
-   git clone https://github.com/kullaniciadin/search-prompts.git
+   git clone https://github.com/gpercem/search-prompts.git
    cd search-prompts
    ```
 
