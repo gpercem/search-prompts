@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -67,7 +68,7 @@ export default function LoginForm() {
         onClick={handleGoogleLogin}
         className="w-full bg-white text-gray-800 font-bold py-2 px-4 rounded flex items-center justify-center"
       >
-        <img src="/google-icon.svg" alt="Google" className="w-6 h-6 mr-2" />
+        <Image src="/google-icon.svg" alt="Google" className="w-6 h-6 mr-2" />
         Continue with Google
       </button>
     </form>
