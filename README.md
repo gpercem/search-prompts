@@ -21,10 +21,11 @@ SearchPrompt is a Next.js application that allows users to search, create, and i
 1. [Prerequisites](#prerequisites)
 2. [Installation](#installation)
 3. [Firebase Setup](#firebase-setup)
-4. [Usage](#usage)
-5. [Deployment](#deployment)
-6. [Contributing](#contributing)
-7. [License](#license)
+4. [Database Setup](#database-setup)
+5. [Usage](#usage)
+6. [Deployment](#deployment)
+7. [Contributing](#contributing)
+8. [License](#license)
 
 ## Prerequisites
 
@@ -37,7 +38,7 @@ SearchPrompt is a Next.js application that allows users to search, create, and i
 
 1. Clone the repository:
    ```
-   git clone https://github.com/gpercem/search-prompts.git
+   git clone https://github.com/yourusername/search-prompts.git
    cd search-prompts
    ```
 
@@ -58,14 +59,84 @@ SearchPrompt is a Next.js application that allows users to search, create, and i
 
 ## Firebase Setup
 
-1. Create a Firebase Project
-2. Set Up Firebase Authentication
-3. Create a Web App
-4. Set Up Firebase Admin SDK
-5. Configure Environment Variables
-6. Initialize Firebase in Your App
+1. Create a Firebase Project:
+   - Go to the [Firebase Console](https://console.firebase.google.com/).
+   - Click "Add project" and follow the prompts to create your project.
 
-For detailed Firebase setup instructions, refer to the [FIREBASE_SETUP.md](FIREBASE_SETUP.md) file in this repository.
+2. Set Up Firebase Authentication:
+   - In the Firebase Console, go to "Authentication" > "Sign-in method".
+   - Enable Email/Password and Google sign-in methods.
+
+3. Create a Web App:
+   - In "Project settings", add a new web app.
+   - Copy the Firebase configuration object.
+
+4. Set Up Firebase Admin SDK:
+   - In "Project settings" > "Service Accounts", generate a new private key.
+   - Save the JSON file securely.
+
+5. Configure Environment Variables:
+   Add the following to your `.env.local` file:
+
+   ```
+   NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+   NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+   NEXT_PUBLIC_FIREBASE_CLIENT_EMAIL=your_client_email
+   FIREBASE_PRIVATE_KEY="your_private_key"
+   ```
+
+   Replace `your_*` with the actual values from your Firebase configuration and service account JSON.
+
+6. Initialize Firebase in Your App:
+   Create `src/firebase/config.js` and `src/firebaseAdmin.js` files to initialize Firebase and Firebase Admin SDK.
+
+## Database Setup
+
+This application uses Vercel's Neon PostgreSQL database. Follow these steps to set up your database:
+
+1. Create a new Postgres database in your Vercel project settings.
+
+2. Once created, you'll receive a connection string. Add this to your `.env.local` file:
+
+   ```
+   POSTGRES_URL="your_connection_string_here"
+   ```
+
+3. Use the following SQL command to create the `prompts` table in your database:
+
+   ```sql
+   CREATE TABLE prompts (
+       post_id CHAR(6) PRIMARY KEY,
+       title VARCHAR(255) NOT NULL,
+       prompt TEXT NOT NULL,
+       description TEXT,
+       likes INT[] DEFAULT '{}',
+       dislikes INT[] DEFAULT '{}',
+       views INT DEFAULT 0,
+       model_name VARCHAR(50),
+       author VARCHAR(100) DEFAULT 'anonymous',
+       created_at TIMESTAMP DEFAULT NOW(),
+       edited_at TIMESTAMP DEFAULT NOW()
+   );
+   ```
+
+4. (Optional) To add sample data to your database, you can use the following INSERT statement:
+
+   ```sql
+   INSERT INTO prompts (post_id, title, prompt, description, model_name) 
+   VALUES 
+   ('d7a2f5', 'Design a mobile app for task management', 
+   'You are tasked with creating a detailed specification for a mobile app focused on task management...', 
+   'Develop a comprehensive task management app specification, including UI/UX, features, and integration options.', 
+   'ChatGPT-4'),
+   // ... (add more sample data as needed)
+   ```
+
+Remember to execute these SQL commands in your Vercel Postgres database console or through a database management tool connected to your Vercel Postgres instance.
 
 ## Usage
 
@@ -129,10 +200,11 @@ SearchPrompt, kullanıcıların yapay zeka promptlarını arayabildiği, oluştu
 1. [Ön Koşullar](#ön-koşullar)
 2. [Kurulum](#kurulum)
 3. [Firebase Kurulumu](#firebase-kurulumu)
-4. [Kullanım](#kullanım)
-5. [Dağıtım](#dağıtım)
-6. [Katkıda Bulunma](#katkıda-bulunma)
-7. [Lisans](#lisans)
+4. [Veritabanı Kurulumu](#veritabanı-kurulumu)
+5. [Kullanım](#kullanım)
+6. [Dağıtım](#dağıtım)
+7. [Katkıda Bulunma](#katkıda-bulunma)
+8. [Lisans](#lisans)
 
 ## Ön Koşullar
 
@@ -145,7 +217,7 @@ SearchPrompt, kullanıcıların yapay zeka promptlarını arayabildiği, oluştu
 
 1. Depoyu klonlayın:
    ```
-   git clone https://github.com/gpercem/search-prompts.git
+   git clone https://github.com/kullaniciadin/search-prompts.git
    cd search-prompts
    ```
 
@@ -172,6 +244,52 @@ SearchPrompt, kullanıcıların yapay zeka promptlarını arayabildiği, oluştu
 4. Firebase Admin SDK'yı Ayarlayın
 5. Ortam Değişkenlerini Yapılandırın
 6. Uygulamanızda Firebase'i Başlatın
+
+Ayrıntılı Firebase kurulum talimatları için bu depodaki [FIREBASE_SETUP.md](FIREBASE_SETUP.md) dosyasına bakın.
+
+## Veritabanı Kurulumu
+
+Bu uygulama, Vercel'in Neon PostgreSQL veritabanını kullanmaktadır. Veritabanınızı kurmak için şu adımları izleyin:
+
+1. Vercel proje ayarlarınızda yeni bir Postgres veritabanı oluşturun.
+
+2. Oluşturulduktan sonra, bir bağlantı dizesi alacaksınız. Bunu `.env.local` dosyanıza ekleyin:
+
+   ```
+   POSTGRES_URL="bağlantı_dizeniz_buraya"
+   ```
+
+3. Veritabanınızda `prompts` tablosunu oluşturmak için aşağıdaki SQL komutunu kullanın:
+
+   ```sql
+   CREATE TABLE prompts (
+       post_id CHAR(6) PRIMARY KEY,
+       title VARCHAR(255) NOT NULL,
+       prompt TEXT NOT NULL,
+       description TEXT,
+       likes INT[] DEFAULT '{}',
+       dislikes INT[] DEFAULT '{}',
+       views INT DEFAULT 0,
+       model_name VARCHAR(50),
+       author VARCHAR(100) DEFAULT 'anonymous',
+       created_at TIMESTAMP DEFAULT NOW(),
+       edited_at TIMESTAMP DEFAULT NOW()
+   );
+   ```
+
+4. (İsteğe bağlı) Veritabanınıza örnek veri eklemek için aşağıdaki INSERT ifadesini kullanabilirsiniz:
+
+   ```sql
+   INSERT INTO prompts (post_id, title, prompt, description, model_name) 
+   VALUES 
+   ('d7a2f5', 'Görev yönetimi için mobil uygulama tasarımı', 
+   'Görev yönetimine odaklanan bir mobil uygulama için detaylı bir şartname oluşturmakla görevlendirildiniz...', 
+   'UI/UX, özellikler ve entegrasyon seçenekleri dahil kapsamlı bir görev yönetimi uygulaması şartnamesi geliştirin.', 
+   'ChatGPT-4'),
+   // ... (gerektiği kadar örnek veri ekleyin)
+   ```
+
+Bu SQL komutlarını Vercel Postgres veritabanı konsolunuzda veya Vercel Postgres örneğinize bağlı bir veritabanı yönetim aracı aracılığıyla çalıştırmayı unutmayın.
 
 ## Kullanım
 
@@ -210,7 +328,7 @@ Bu proje Vercel'de dağıtılmak üzere tasarlanmıştır. Şu adımları izleyi
 
 ## Katkıda Bulunma
 
-Pull Request göndermekten çekinmeyin.
+Katkılarınızı bekliyoruz! Lütfen bir Pull Request göndermekten çekinmeyin.
 
 ## Lisans
 
